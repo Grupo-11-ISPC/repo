@@ -115,7 +115,7 @@ def iniciar_sesion():
                     print("\nBienvenido a SMARTHOME, tus dispositivos estan bien administrados!")
                     time.sleep(0.2)
                     while verificar_usuario: #verificacion del usuario
-                        sesion = input("Ingrese su nombre de usuario: ").strip()
+                        sesion = input("Ingrese su nombre de usuario: ").strip().lower()
                         usuario_encontrado = None # evitar malas verificaciones
                         for usu in sesiones:
                             if usu["usuario"] == sesion:
