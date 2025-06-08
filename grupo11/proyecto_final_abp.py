@@ -1,57 +1,94 @@
 #Proyecto final ABP(Entrega 1)
-import time
 
-def gestor_dispositivos (dispositivos = None):
+
+def gestor_dispositivos (dispositivos , lugares):
     if dispositivos is None:
         dispositivos = []
+    elif lugares is None:
+        print("Primero registre una casa!")
+        return
+    
     print("Hola bienvenido a Smarthome® aca podras gestionar todos los dispositivos de tu hogar." , 
           "Esto es una version alpha, te pedimos que cualquier error lo reportes para ayudarnos a mejorar." , 
           "Desde ya muchas gracias y bienvenido!" , 
           sep = "\n")
-    time.sleep(0.5)
+    while True:#Elije sobre que casa  va a trabajar
+        casa = input("Ingrese el nombre de la casa que desea operar (0 para salir): ").lower().strip()
+        if casa == "0":
+            print("\nsaliendo...")
+            break
+        casa_encontrada = False
+        for nombre_de_casa in lugares:
+            if nombre_de_casa["nombre"] == casa:
+                casa_encontrada = nombre_de_casa
+                print("\nCasa encontrada!")
+                break
+        if casa_encontrada == False:
+            print("\nDomicilio no encontrado!")
+        
+        elif casa_encontrada:
+            print(f"Se encontro correctamente el domicilio: {casa_encontrada["nombre"]}")
+            break
+
+      
     while True:
         try:
             print("","Opciones:", "1. Agregar dispositivos", 
                   "2. Listar dispositivos",
                   "3. Eliminar dispositivo",
                   "4. Cambiar estado de un dispositivo", 
-                  "5. Salir", sep="\n")
-            opcion = int(input("Seleccione una opcion (1-5): "))
+                  "5. Cambiar ubicacion del dispositivo" ,
+                  "6. Salir", sep="\n")
+            opcion = int(input("Seleccione una opcion (1-6): "))
             
+            #OPCION 1(agregar dispositivos)
             if opcion == 1: #este modulo permite agregar un dispositivo
                  nombre = input("Ingrese un nombre del dispositivo: ").strip().lower()
                  tipo = input("Ingrese el tipo de dispositivo que desea ingresar: ").strip().lower()
                  estado = input ("Ingrese el estado (apagado o encendido) de su dispositivo: ").strip().lower()
-                 
                  if estado not in ["encendido", "apagado"]:
                      estado = "encendido"
                  
-                 agregar = {"nombre": nombre, "tipo" : tipo , "estado" : estado}
+                 while True:#agregar ubicacion al dispositivo
+                    print(f"Seleccione e ingrese la ubicacion")
+                    for ubicaciones in casa_encontrada["ubicaciones_casa"]:
+                        print(f"-{ubicaciones}")
+                    ubicacion = input("Ingrese la ubicacion del dispositivo: ").strip().lower()
+                    
+                    if ubicacion not in casa_encontrada["ubicaciones_casa"]:
+                        print("esta ubicacion no se encunetra disponible")
+                    else:
+                        break
+                    
+
+                 
+                 agregar = {"nombre": nombre, "tipo" : tipo , "estado" : estado , "ubicacion" : ubicacion}
                  dispositivos.append(agregar)
                  print(f"\n dispositivo {nombre} agregado correctamente")
-                 time.sleep(1)
-            
+                 
+            #OPCION 2(listar)
             elif opcion == 2:
                 if dispositivos:
                     print("Dispositivos actuales: \n")
                     for i, dispositivo in enumerate(dispositivos,1):
-                        print(f"Nombre: {dispositivo["nombre"]}" , f"Tipo: {dispositivo["tipo"]}" ,f"Estado: {dispositivo["estado"]}.", sep = "/") 
-                        time.sleep(1)
+                        print(f"Nombre: {dispositivo["nombre"]}" , f"Tipo: {dispositivo["tipo"]}" ,f"Estado: {dispositivo["estado"]}.", f"Ubicacion: {dispositivo["ubicacion"]}." , sep = "/") 
+                        
                 else:
                     print("No hay dispositivos registrados!")
-                    time.sleep(1)
-            
+                    
+            #OPCION 3(eliminar)
             elif opcion == 3:
                 nombre = input("Ingrese el nombre del dispositivo a eliminar: ").strip().lower()
                 for dispositivo in dispositivos:
                     if dispositivo["nombre"] == nombre:
                         dispositivos.remove(dispositivo)
                         print(f"Se elimino correctamente el dispositivo {nombre}")
-                        time.sleep(1)
+                        
                         break
                 else:
                     print("El nombre ingresado no se encuentra en la lista de dispositivos")
-                    time.sleep(1)
+                    
+            #OPCION 4(estado)
             elif opcion == 4:
                 nombre = input("Ingrese el nombre del dispositivo que deseecambiar su estado: ").strip().lower()
                 for dispositivo in dispositivos:
@@ -61,52 +98,53 @@ def gestor_dispositivos (dispositivos = None):
                         else:
                             dispositivo["estado"] = "encendido"
                         print(f"\n El dispositivo {nombre} se a cambiado su estado a {dispositivo["estado"]} ")
-                        time.sleep(1)
+                        
                         break
                 else:
                     print(f"\n El dispositivo {nombre} no se encuentra en la lista de dispositivos, por favor agregelo.")
-                    time.sleep(0.5)
+                    
+            #OPCION 5(ubicacion)
             elif opcion == 5:
+                while True:
+                    dispositivo_encontrado = False
+                    dispositivos_actual = None
+                    ubicacion_valida = False
+                    cambiar_lugar = input("Ingrese el nombre del dispositivo que desea cambiar su posicion: ").strip().lower()
+                           
+                    for cambio in dispositivos:
+                        if cambio["nombre"] == cambiar_lugar:
+                            dispositivos_actual = cambio
+                            dispositivo_encontrado = True
+                            break
+                    if  dispositivo_encontrado == False:
+                        print("Nombre del dispositivos mal colocado, vuelve a colocarlo")
+                    else:
+                        while True:    
+                            ubicacion_cambio = input("Ingrese la nueva ubicacion del dispositivo: ")
+                            for ubicaciones in casa_encontrada["ubicaciones_casa"]:
+                                if ubicacion_cambio == ubicaciones:
+                                    ubicacion_valida = True
+                                    break
+                            if ubicacion_valida == False:
+                                print("La ubicacion no es valida!")
+                            elif ubicacion_valida == True:
+                                dispositivos_actual["ubicacion"] = ubicacion_cambio
+                                print(f"ubicacion cambiada con exito a {dispositivos_actual["ubicacion"]}")
+                                break
+                        
+
+                        
+            elif opcion == 6:
                 print("Muchas gracias por usar nuestra app." , 
                       "Te recordamos que esta en version alpha." , 
                       "Te invitamos a reportar todos los errores que encuentres, muchas gracias!", 
                       sep = "\n")
-                time.sleep(2)
+                
                 break
             
             else:
                 print("Este numero no pertenece a una opcion.")
-                time.sleep(0.5)
+                
         except ValueError:
             print("ERROR ingrese un numero de opcion del 1 al 4.")
     return dispositivos
-
-
-def automatizar(dispositivos):
-    print(" \n Bienvenidos a la pestaña de automatizacion" , "Aca podras ver todos los tipos de automatizacion" , "Mas adelante podras tener tus propios modos de automatizacion personalizados y mucho mas!", sep = "\n")
-    time.sleep(0.4)
-    lista_print = ["Seleccione una opcion de automatizacion por favor:" , "1. Modo Noche (luces apagadas y alarma encendida)." , "2. Mas modos proximamente" , "3. Salir del menu."]
-    for i in lista_print:
-        print(i)
-        time.sleep(0.5)
-    opcion_automatizar =  int(input("Seleccione una opcion: "))
-    modo_noche = False
-    if opcion_automatizar == 1:
-        for dispositivo in dispositivos:
-            if dispositivo["tipo"] in ["persiana" , "luces"]:
-                dispositivo["estado"] = "apagado"
-            elif dispositivo["tipo"] in ["camara" , "alarma"]:
-                dispositivo["estado"] = "encendido"
-            modo_noche = True
-            print (dispositivo)
-        #falta q no entre al else si o si
-    elif modo_noche == False:   
-        print("No se encontraron dispositivos para automatizar en modo noche")
-        time.sleep(1)  
-    
-    elif opcion_automatizar == 2:
-        print("Muy pronto tendras nuevos modos de automatizacion, gracias por tu paciencia.")
-        time.sleep(1)
-    
-    else:
-        print("Deja tus dispositivos en nuestras manos!")
