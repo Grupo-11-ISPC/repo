@@ -87,12 +87,13 @@ def registrar_usuario(sesiones):
                 break
                 
             print("\nFELICIDADES YA TE REGISTRASTE EN SMARTHOME!")
-                
+            rol = "admin" if len(sesiones) == 0 else "usuario"
             sesiones.append({"nombre" : nombre ,
                              "apellido" : apellido ,
                              "email" : email , 
                              "usuario" : usuario , 
-                             "contraseña" : contra})
+                             "contraseña" : contra ,
+                             "rol" : rol})
             validar_contra = False
             break
     return sesiones

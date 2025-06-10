@@ -13,26 +13,29 @@ def automatizar(dispositivos):
     while True:
         try:
             opcion_automatizar =  int(input("Seleccione una opcion: "))
-            if opcion_automatizar.isdigit():
-                break
+            modo_noche = False
+            if opcion_automatizar == 1:
+                for dispositivo in dispositivos:
+                
+                    if dispositivo["tipo"] in ["persiana" , "luces"]:
+                        dispositivo["estado"] = "apagado"
+                        break
+                    elif dispositivo["tipo"] in ["camara" , "alarma"]:
+                        dispositivo["estado"] = "encendido"
+                        modo_noche = True
+                        break
+                else:
+                    print("No se encontraron dispositivos para hacer la automatizacion")
+                    return
+                print (dispositivo)
+  
+            elif opcion_automatizar == 2:
+                print("Muy pronto tendras nuevos modos de automatizacion, gracias por tu paciencia.")
+
+            else:
+                print("Deja tus dispositivos en nuestras manos!")
+
         except ValueError:
             print("Por favor, solo se aceptan numeros.")
         
-    modo_noche = False
-    if opcion_automatizar == 1:
-        for dispositivo in dispositivos:
-            if dispositivo["tipo"] in ["persiana" , "luces"]:
-                dispositivo["estado"] = "apagado"
-            elif dispositivo["tipo"] in ["camara" , "alarma"]:
-                dispositivo["estado"] = "encendido"
-            modo_noche = True
-            print (dispositivo)
-
-    elif modo_noche == False:   
-        print("No se encontraron dispositivos para automatizar en modo noche")
-  
-    elif opcion_automatizar == 2:
-        print("Muy pronto tendras nuevos modos de automatizacion, gracias por tu paciencia.")
-
-    else:
-        print("Deja tus dispositivos en nuestras manos!")
+    

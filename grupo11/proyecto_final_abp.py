@@ -54,11 +54,16 @@ def gestor_dispositivos (dispositivos , lugares):
                     for ubicaciones in casa_encontrada["ubicaciones_casa"]:
                         print(f"-{ubicaciones}")
                     ubicacion = input("Ingrese la ubicacion del dispositivo: ").strip().lower()
-                    
-                    if ubicacion not in casa_encontrada["ubicaciones_casa"]:
-                        print("esta ubicacion no se encunetra disponible")
-                    else:
+                    ubicacion_encontrada = False
+                    for ubic in casa_encontrada["ubicaciones_casa"]:
+                        if ubicacion in ubic:
+                            ubicacion_encontrada = True
+                            break
+                    if ubicacion_encontrada:
+                        print("\nUbicacion correcta")
                         break
+                    elif not ubicacion_encontrada:
+                        print("esta ubicacion no se encunetra disponible")
                     
 
                  
@@ -105,7 +110,6 @@ def gestor_dispositivos (dispositivos , lugares):
                     
             #OPCION 5(ubicacion)
             elif opcion == 5:
-                while True:
                     dispositivo_encontrado = False
                     dispositivos_actual = None
                     ubicacion_valida = False
@@ -118,15 +122,18 @@ def gestor_dispositivos (dispositivos , lugares):
                             break
                     if  dispositivo_encontrado == False:
                         print("Nombre del dispositivos mal colocado, vuelve a colocarlo")
+                    
                     else:
-                        while True:    
-                            ubicacion_cambio = input("Ingrese la nueva ubicacion del dispositivo: ")
+                        while True:
+                            ubicacion_cambio = input("Ingrese la nueva ubicacion del dispositivo: ").strip().lower()
                             for ubicaciones in casa_encontrada["ubicaciones_casa"]:
-                                if ubicacion_cambio == ubicaciones:
+                                if ubicacion_cambio in ubicaciones:
                                     ubicacion_valida = True
                                     break
-                            if ubicacion_valida == False:
+                            
+                            if not ubicacion_valida:
                                 print("La ubicacion no es valida!")
+                            
                             elif ubicacion_valida == True:
                                 dispositivos_actual["ubicacion"] = ubicacion_cambio
                                 print(f"ubicacion cambiada con exito a {dispositivos_actual["ubicacion"]}")
