@@ -1,5 +1,5 @@
 #Menu principal de SMARTHOME proyecto final abp
-from proyecto_final_abp import gestor_dispositivos
+from gestor_dispositivos import gestor_dispositivos
 from registrarse import registrar_usuario
 from inicio_sesion import inicio_sesion
 from automatizaciones import automatizar
@@ -74,3 +74,4 @@ def menu_principal():
             print("Seleccione un numero (1-3)")
     
 menu_principal()
+
