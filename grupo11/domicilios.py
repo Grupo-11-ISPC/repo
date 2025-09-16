@@ -18,9 +18,7 @@ def domicilios():
             if opcion_domicilio == 1:
                 while registro_casa:
                     nombre_domicilio = input("\nEl nombre por el cual desea identificar a su domicilio (solo letras): ").strip().lower()
-                    if len(nombre_domicilio.split()) > 1 or any(especial in string.punctuation for especial in nombre_domicilio) or len(nombre_domicilio) < 1:
-                        print("\nNo debe contener espacios ni signos especiales o de puntuacion, solo letras por favor.")
-                    elif nombre_domicilio.isalpha():
+                    if nombre_domicilio.isalpha():
                         print ("\nIngrese las ubicaciones que tiene en su hogar( para salir del menu ingrese el numero '0'): ")
                         while True:
                             ubicaciones = input("\nIngrese el lugar de su hogar: ").strip().lower()
@@ -71,3 +69,4 @@ def domicilios():
         except ValueError:
             print("Solo se aceptan numeros, ingrese un numero por favor.")
     return lugares
+
