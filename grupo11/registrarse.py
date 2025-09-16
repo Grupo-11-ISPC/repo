@@ -50,7 +50,7 @@ def registrar_usuario(sesiones):
                     
                 while True: #registro del usuario
                     usuario = input("\nIngrese su nombre de usuario: ").strip().lower()
-                    if len(usuario.split()) > 1 or len(usuario) < 6 or any(caracter in string.punctuation for caracter in usuario):
+                    if len(usuario.split()) > 1 or any(caracter in string.punctuation for caracter in usuario):
                         print ("\nError, no debe contener espacios ni caracteres especiales y debe tener minimo 6 caracteres")
                             
                     elif len([num for num in usuario if num.isdigit()]) < 2:
@@ -96,4 +96,5 @@ def registrar_usuario(sesiones):
                              "rol" : rol})
             validar_contra = False
             break
+
     return sesiones
